@@ -1,7 +1,6 @@
 #include "Dictionary.h"
 
 
-
 Dictionary::Dictionary() {
     numWords = 0;
     root = new Node();
@@ -26,14 +25,13 @@ void Dictionary::copyHelper(Node *&thisTree, Node *otherTree) {
         thisTree = nullptr;
         return;
     }
-
     thisTree->isWord = otherTree->isWord;
 
- for(int i = 0; i < NUM_CHARS; i++) {
-     if (otherTree->letters[i] != nullptr)
-         thisTree->letters[i] = new Node;
-     copyHelper(thisTree->letters[i], otherTree->letters[i]);
- }
+    for(int i = 0; i < NUM_CHARS; i++) {
+        if (otherTree->letters[i] != nullptr)
+            thisTree->letters[i] = new Node;
+        copyHelper(thisTree->letters[i], otherTree->letters[i]);
+    }
 }
 
 Dictionary &Dictionary::operator=(const Dictionary &otherDict) {
@@ -50,11 +48,12 @@ Dictionary::~Dictionary() {
 }
 
 void Dictionary::destroyHelper(Node *thisTree) {
-    if (thisTree == nullptr)
-        return;
+
+    if (!thisTree)  return;
 
     for (int i = 0; i < NUM_CHARS; i++)
         destroyHelper(thisTree->letters[i]);
+
     thisTree = nullptr;
     delete thisTree;
 }
@@ -79,8 +78,6 @@ void Dictionary::LoadDictionaryFile(string filename) {
     while (inFile >> line)
         AddWord(line);
 
-
-
     inFile.close();
 }
 
@@ -88,7 +85,6 @@ void Dictionary::SaveDictionaryFile(string filename) {
     // Will Save all the words added to the tree into a file
     ofstream out;
     out.open(filename);
-
     SaveDictionaryHelper(root, "", out);
 }
 
@@ -110,7 +106,6 @@ void Dictionary::AddWord(string word) {
     // calculate index associated with char (cond valid character in function)
     // check nodes existence in path and create if necessary
     Node *curr = root;                                       // start at the root
-
 
     for (int i = 0; i < word.size(); i++){
 
@@ -140,7 +135,7 @@ bool Dictionary::IsWord(string word) {
 
 
 bool Dictionary::isWordHelper(Node *&subNode, string word, int index) {
-    if (subNode == nullptr)   return false;
+    if (!subNode)   return false;
     if (index < word.size() && subNode->letters[(int)word[index] - (int)'a'])
         return isWordHelper(subNode->letters[(int)word[index] - (int)'a'], word, 1 + index);
 
@@ -164,31 +159,3 @@ int Dictionary::WordCount() {
     return numWords;
 }
 
-
-
-
-
-
-
-// added
-
-void Dictionary::PrintTree(){
-    PrintHelper(root);
-}
-
-
-void Dictionary::PrintHelper(Node* subtree) {
-    if(subtree == nullptr) return;
-
-    int index = 0;
-    for (int i = 0; i< NUM_CHARS; i++)
-        if (subtree->letters[i] != nullptr) {
-            index = i;
-            break;
-        }
-
-    cout << getCharByIndex(index);
-    PrintHelper(subtree->letters[index]);
-    cout << endl;
-
-}

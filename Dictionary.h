@@ -5,8 +5,7 @@
 #include <fstream>
 #include <ctype.h>
 #include <string>
-#include <algorithm>
-#include <string>
+
 using namespace std;
 
 
@@ -24,13 +23,13 @@ class DictionaryError{
     private:
         string msg;
 };
-static int getIndexByChar(char c) {
-    if (c == ' ' || !isalpha(c))  throw BadDigit();
-    return (int)c - (int)'a';
-}
-static char getCharByIndex(int integer_val) {
-    return (char)(integer_val + (int)'a');
-}
+// static int getIndexByChar(char c) {
+//     if (c == ' ' || !isalpha(c))  throw BadDigit();
+//     return (int)c - (int)'a';
+// }
+// static char getCharByIndex(int integer_val) {
+//     return (char)(integer_val + (int)'a');
+// }
 
 
 class Dictionary
@@ -57,8 +56,9 @@ class Dictionary
         bool IsPrefix(string word);
         int WordCount();  // Returns total number of words in dictionary
 
+        int GetWordCount(string word);
         string GetWord(int index);
-        void PrintTree();
+        // void PrintTree();
 
     private:
 
@@ -94,7 +94,7 @@ class Dictionary
 
         bool isWordHelper(Node*&, string, int);
         // bool isPrefixHelper(Node*&, string, int);
-        void PrintHelper(Node *);
+        // void PrintHelper(Node *);
 };
 
 #endif //BOGGLE_DICTIONARY_H
